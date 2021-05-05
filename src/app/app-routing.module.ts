@@ -8,6 +8,7 @@ const routes: Routes = [
   { path: 'wordlist-management', component: WordlistManagementComponent },
   { path: 'training', component: TrainingComponent },
   { path: 'assessment', component: AssessmentComponent },
+  { path: '', redirectTo: 'wordlist-management', pathMatch: 'full' },
 ];
 
 @NgModule({
