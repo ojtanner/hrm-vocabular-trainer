@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Language } from '../shared/models/Language.enum';
 import { Word } from '../shared/models/Word';
 import { WordPair } from '../shared/models/WordPair';
-import { WordlistManagementService } from '../shared/wordlist-management.service';
+import { WordlistManagementService } from '../shared/services/wordlist-management.service';
 
 @Component({
   selector: 'app-wordlist-input',

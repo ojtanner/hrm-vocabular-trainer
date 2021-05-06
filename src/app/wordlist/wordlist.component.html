@@ -1,5 +1,18 @@
 <div>
   <h1>{{ "Word Pairs:" }}</h1>
+  <button (click)="sortBySelectedLanguage()">Sort by Language</button>
+  <select
+    name="leftWordLanguage"
+    id="leftWordLanguage"
+    [(ngModel)]="this.wordListLanguages"
+  >
+    <option
+      *ngFor="let language of this.wordListLanguages | keyvalue"
+      [ngValue]="language.value"
+    >
+      {{ language.value }}
+    </option>
+  </select>
   <button (click)="clearWordPairs()">Clear list</button>
   <ul>
     <li *ngFor="let wordPair of wordlist.wordPairs; let i = index">

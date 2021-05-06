@@ -1,13 +1,19 @@
 import { Injectable } from '@angular/core';
-import { WordList } from '../shared/models/WordList';
-import { WordPair } from '../shared/models/WordPair';
-import { Word } from '../shared/models/Word';
+import { WordList } from '../models/WordList';
+import { WordPair } from '../models/WordPair';
+import { Word } from '../models/Word';
+import { Language } from '../models/Language.enum';
+import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class WordlistManagementService {
   public wordList: WordList;
+  private currentLanguages = new BehaviorSubject<[Language, Language] | null>(
+    null
+  );
+  public currentLanguages$ = this.currentLanguages.asObservable();
 
   constructor() {
     this.wordList = new WordList();
@@ -15,22 +21,36 @@ export class WordlistManagementService {
 
   public addWordPair(wordPair: WordPair): void {
     this.wordList.addWordPair(wordPair);
+    this.setWordListLanguages();
     this.saveToLocalStorage();
   }
 
   public removeWordPair(index: number): void {
     this.wordList.removeWordPair(index);
+    this.serializeWordlist();
     this.saveToLocalStorage();
+
+    if (this.wordList.wordPairs.length === 0) {
+      this.currentLanguages.next(null);
+    }
   }
 
   public clearWordPairs(): void {
     this.wordList.clearWordPairs();
     this.saveToLocalStorage();
+
+    if (this.wordList.wordPairs.length === 0) {
+      this.currentLanguages.next(null);
+    }
   }
 
   public getWordList(): WordList {
     this.retrieveFromLocalStorage();
     return this.wordList;
+  }
+
+  private setWordListLanguages(): void {
+    this.currentLanguages.next(this.wordList.languages);
   }
 
   private saveToLocalStorage(): void {
@@ -79,7 +99,10 @@ export class WordlistManagementService {
 
       return new WordList();
     } catch (error) {
-      throw new Error('Error during deserialization of WordList');
+      localStorage.clear();
+      throw new Error(
+        'Error during deserialization of WordList. Cleared corrupted Localstorage.'
+      );
     }
   }
 }

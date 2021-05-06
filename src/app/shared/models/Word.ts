@@ -30,5 +30,9 @@ export class Word {
         'Word Instantiation Error: Word must be at least 2 characters long.'
       );
     }
+
+    if (this._language === undefined) {
+      throw new Error('Word Instantiation Error: No Languages specified');
+    }
   }
 }
