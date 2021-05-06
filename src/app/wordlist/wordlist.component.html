@@ -1,8 +1,10 @@
 <div>
-  <h1>{{ this.title }}</h1>
+  <h1>{{ "Word Pairs:" }}</h1>
+  <button (click)="clearWordPairs()">Clear list</button>
   <ul>
-    <li *ngFor="let wordPair of wordlist.wordPairs">
-      {{ wordPair.toString() }}
+    <li *ngFor="let wordPair of wordlist.wordPairs; let i = index">
+      <p>{{ wordPair.toString() }}</p>
+      <button (click)="removeWordPair(i)">Remove</button>
     </li>
   </ul>
 </div>

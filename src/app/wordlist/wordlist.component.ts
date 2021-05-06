@@ -17,4 +17,12 @@ export class WordlistComponent implements OnInit {
   }
 
   ngOnInit(): void {}
+
+  public removeWordPair(index: number): void {
+    this.wordListManagementService.removeWordPair(index);
+  }
+
+  public clearWordPairs(): void {
+    this.wordListManagementService.clearWordPairs();
+  }
 }
