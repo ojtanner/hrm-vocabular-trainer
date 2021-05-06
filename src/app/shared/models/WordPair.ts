@@ -10,6 +10,10 @@ export class WordPair {
     this.validate();
   }
 
+  public toString(): string {
+    return `${this._left.language}: ${this._left.spelling} | ${this._right.language}: ${this._right.spelling}`;
+  }
+
   public get left(): Word {
     return this._left;
   }

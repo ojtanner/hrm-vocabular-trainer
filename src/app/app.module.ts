@@ -7,6 +7,8 @@ import { HeaderComponent } from './shared/header/header.component';
 import { WordlistManagementComponent } from './wordlist-management/wordlist-management.component';
 import { TrainingComponent } from './training/training.component';
 import { AssessmentComponent } from './assessment/assessment.component';
+import { WordlistComponent } from './wordlist/wordlist.component';
+import { WordpairComponent } from './wordpair/wordpair.component';
 
 @NgModule({
   declarations: [
@@ -14,7 +16,9 @@ import { AssessmentComponent } from './assessment/assessment.component';
     HeaderComponent,
     WordlistManagementComponent,
     TrainingComponent,
-    AssessmentComponent
+    AssessmentComponent,
+    WordlistComponent,
+    WordpairComponent
   ],
   imports: [
     BrowserModule,
