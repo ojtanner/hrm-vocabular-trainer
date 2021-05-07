@@ -1,15 +1,100 @@
+import { ThisReceiver } from '@angular/compiler';
 import { Component, OnInit } from '@angular/core';
+import { Language } from '../shared/models/Language.enum';
+import { WordPairQuestion } from '../shared/models/WordPairQuestion';
+import { WordlistTrainingService } from '../shared/services/wordlist-training.service';
 
 @Component({
   selector: 'app-training',
   templateUrl: './training.component.html',
-  styleUrls: ['./training.component.css']
+  styleUrls: ['./training.component.css'],
 })
 export class TrainingComponent implements OnInit {
+  private currentQuestion: WordPairQuestion | null;
+  public questionLanguage: Language | null;
+  public questionSpelling: string | null;
+  public answerLanguage: Language | null;
+  public answerSpelling: string | null;
 
-  constructor() { }
+  public hasStarted: boolean;
+  public questionMode: boolean;
+  public display: string;
 
-  ngOnInit(): void {
+  constructor(private wordlistTrainingService: WordlistTrainingService) {
+    // Note: TS does not recognize initialization method here and complains about uninitialized instance variables.
+    this.currentQuestion = null;
+    this.questionLanguage = null;
+    this.questionSpelling = null;
+    this.answerLanguage = null;
+    this.answerSpelling = null;
+    this.hasStarted = false;
+    this.questionMode = false;
+    this.display = '';
   }
 
+  ngOnInit(): void {}
+
+  public startTraining(): void {
+    this.wordlistTrainingService.startTraining();
+    this.currentQuestion = this.wordlistTrainingService.nextQuestion();
+
+    if (this.currentQuestion === null) {
+      this.display =
+        'Your WordList is empty. Please add some WordPairs to start your training.';
+      return;
+    }
+
+    this.hasStarted = true;
+    this.questionMode = true;
+
+    console.log('Started');
+  }
+
+  public stopTraining(): void {
+    this.resetInitialState();
+    this.display = 'Training was stopped.';
+  }
+
+  public nextQuestion(): void {
+    const nextQuestion: WordPairQuestion | null = this.wordlistTrainingService.nextQuestion();
+
+    if (nextQuestion === null) {
+      this.resetInitialState();
+      this.display = 'Training finished.';
+      return;
+    }
+
+    this.currentQuestion = nextQuestion;
+    this.questionMode = true;
+  }
+
+  public checkAnswer(answer: string): void {
+    if (answer === null || answer === undefined || answer.length < 2) {
+      this.display =
+        'Please enter a word that is at least two characters long.';
+      return;
+    }
+
+    if (
+      answer.toLowerCase() ===
+      this.currentQuestion?.questionWord.spelling.toLowerCase()
+    ) {
+      this.display = 'Correct answer. Good job!';
+    } else {
+      this.display = `Incorrect answer. You entered ${answer} but the correct answer is ${this.currentQuestion?.questionWord.spelling}`;
+    }
+
+    this.questionMode = false;
+  }
+
+  private resetInitialState(): void {
+    this.currentQuestion = null;
+    this.questionLanguage = null;
+    this.questionSpelling = null;
+    this.answerLanguage = null;
+    this.answerSpelling = null;
+    this.hasStarted = false;
+    this.questionMode = false;
+    this.display = '';
+  }
 }

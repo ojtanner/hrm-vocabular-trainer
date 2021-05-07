@@ -17,6 +17,10 @@ export class WordlistManagementService {
 
   constructor() {
     this.wordList = new WordList();
+    this.retrieveFromLocalStorage();
+
+    console.log('Inside constructor');
+    console.log(this.wordList);
   }
 
   public addWordPair(wordPair: WordPair): void {
@@ -49,6 +53,10 @@ export class WordlistManagementService {
     return this.wordList;
   }
 
+  public getWordPairs(): WordPair[] {
+    return this.wordList.wordPairs;
+  }
+
   private setWordListLanguages(): void {
     this.currentLanguages.next(this.wordList.languages);
   }
@@ -64,6 +72,16 @@ export class WordlistManagementService {
       const deseriaizedWordlist = this.deseriaizeWordlist(serializeWordlist);
       this.wordList = deseriaizedWordlist;
     }
+
+    if (this.wordList.wordPairs.length !== 0) {
+      const firstWordPair = this.wordList.wordPairs[0];
+      this.wordList.languages = [
+        firstWordPair.left.language,
+        firstWordPair.right.language,
+      ];
+
+      this.currentLanguages.next(this.wordList.languages);
+    }
   }
 
   private serializeWordlist(): string {
@@ -75,7 +93,6 @@ export class WordlistManagementService {
     try {
       const deserializedJSON = JSON.parse(serialized);
       const wordpairsJSON = deserializedJSON._wordPairs;
-      console.log(wordpairsJSON);
 
       if (Array.isArray(wordpairsJSON)) {
         const wordPairs: WordPair[] = wordpairsJSON.map((wordpairJSON) => {

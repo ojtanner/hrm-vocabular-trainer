@@ -5,9 +5,9 @@ export class Word {
   private _spelling: string;
 
   constructor(language: Language, spelling: string) {
+    this.validate(language, spelling);
     this._language = language;
     this._spelling = spelling;
-    this.validate();
   }
 
   public get language(): Language {
@@ -24,14 +24,14 @@ export class Word {
     this._spelling = value;
   }
 
-  private validate(): void {
-    if (this._spelling.length < 2) {
+  private validate(language: Language, spelling: string): void {
+    if (spelling === undefined || spelling.length < 2) {
       throw new Error(
         'Word Instantiation Error: Word must be at least 2 characters long.'
       );
     }
 
-    if (this._language === undefined) {
+    if (language === undefined) {
       throw new Error('Word Instantiation Error: No Languages specified');
     }
   }

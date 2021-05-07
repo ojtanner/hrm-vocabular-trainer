@@ -25,7 +25,6 @@ export class WordlistComponent implements OnInit, OnDestroy {
     this.wordlist = this.wordListManagementService.getWordList();
     this.wordListLanguages = null;
     this.subscription = new Subscription();
-    console.log(this.wordlist);
   }
 
   ngOnInit(): void {

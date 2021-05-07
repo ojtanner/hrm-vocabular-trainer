@@ -1,1 +1,12 @@
-<p>training works!</p>
+<h1>Training</h1>
+
+<button (click)="startTraining()">Start training</button>
+<button (click)="stopTraining()">Stop training</button>
+
+<div *ngIf="!this.hasStarted; else questionDisplay">
+  <p>Clilck "Start training to beginn.</p>
+</div>
+<ng-template #questionDisplay>
+  <p>Qwestion</p>
+</ng-template>
+<p>{{ this.display }}</p>

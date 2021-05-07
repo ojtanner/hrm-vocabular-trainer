@@ -37,9 +37,7 @@ export class WordList {
   }
 
   public removeWordPair(index: number): void {
-    console.log(index);
     this._wordPairs.splice(index, 1);
-    console.log(this._wordPairs);
   }
 
   public clearWordPairs(): void {
