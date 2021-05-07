@@ -19,6 +19,8 @@ export class TrainingComponent implements OnInit {
   public hasStarted: boolean;
   public questionMode: boolean;
   public display: string;
+  public totalQuestions: number;
+  public answeredQuesetions: number;
 
   constructor(private wordlistTrainingService: WordlistTrainingService) {
     // Note: TS does not recognize initialization method here and complains about uninitialized instance variables.
@@ -30,9 +32,15 @@ export class TrainingComponent implements OnInit {
     this.hasStarted = false;
     this.questionMode = false;
     this.display = '';
+    this.totalQuestions = 0;
+    this.answeredQuesetions = 0;
   }
 
   ngOnInit(): void {}
+
+  public getQuestionProgress(): string {
+    return `${this.answeredQuesetions} of ${this.totalQuestions} questions answered`;
+  }
 
   public getQuestionDisplay(): string {
     return `${this.answerLanguage}: ${this.answerSpelling} | ${this.questionLanguage}: `;
@@ -53,7 +61,8 @@ export class TrainingComponent implements OnInit {
     this.hasStarted = true;
     this.questionMode = true;
 
-    console.log('Started');
+    this.totalQuestions = this.wordlistTrainingService.getTotalNumberOfWordPairs();
+    this.answeredQuesetions = 0;
   }
 
   private setQuestionAndAnswerWordInformation(): void {
@@ -74,17 +83,18 @@ export class TrainingComponent implements OnInit {
   public nextQuestion(): void {
     console.log('Next question');
     const nextQuestion: WordPairQuestion | null = this.wordlistTrainingService.nextQuestion();
-    console.log(nextQuestion);
+    this.display = '';
 
     if (nextQuestion === null) {
       this.resetInitialState();
-      this.display = 'Training finished.';
+      this.display = '';
       return;
     }
 
     this.currentQuestion = nextQuestion;
     this.setQuestionAndAnswerWordInformation();
     this.questionMode = true;
+    this.answeredQuesetions += 1;
   }
 
   public checkAnswer(): void {

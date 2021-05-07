@@ -1,6 +1,4 @@
 import { Injectable } from '@angular/core';
-import { Language } from '../models/Language.enum';
-import { WordList } from '../models/WordList';
 import { WordPair } from '../models/WordPair';
 import { WordPairQuestion } from '../models/WordPairQuestion';
 import { WordlistManagementService } from './wordlist-management.service';
@@ -10,25 +8,33 @@ import { WordlistManagementService } from './wordlist-management.service';
 })
 export class WordlistTrainingService {
   private wordPairs: WordPair[];
+  private totalNumberOfWordPairs: number;
   public currentQuestion: WordPairQuestion | null;
 
   constructor(private wordlistManagementService: WordlistManagementService) {
     this.wordPairs = [];
     this.currentQuestion = null;
+    this.totalNumberOfWordPairs = 0;
   }
 
   public startTraining(): void {
     this.wordPairs = [...this.wordlistManagementService.getWordPairs()];
+    this.totalNumberOfWordPairs = this.wordPairs.length;
     this.setNextQuestion();
   }
 
   public nextQuestion(): WordPairQuestion | null {
-    console.log('nextQuestion() start');
     const currentQuestion = this.currentQuestion;
-
     this.setNextQuestion();
-
     return currentQuestion;
+  }
+
+  public getTotalNumberOfWordPairs(): number {
+    return this.totalNumberOfWordPairs;
+  }
+
+  public getRemainingNumberOfWordPairs(): number {
+    return this.wordPairs.length;
   }
 
   private setNextQuestion(): void {

@@ -4,10 +4,11 @@
 <button (click)="stopTraining()">Stop training</button>
 
 <div *ngIf="!this.hasStarted; else questionDisplay">
-  <p>Clilck "Start training to beginn.</p>
+  <p>Click "Start training to beginn.</p>
 </div>
 <ng-template #questionDisplay>
   <div *ngIf="this.questionMode; else pauseMode">
+    <p>{{ this.getQuestionProgress() }}</p>
     <p>{{ this.getQuestionDisplay() }}</p>
     <input type="text" [(ngModel)]="this.questionSpelling" />
     <button type="submit" (click)="checkAnswer()">Submit your Answer</button>
