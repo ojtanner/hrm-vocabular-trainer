@@ -34,6 +34,10 @@ export class TrainingComponent implements OnInit {
 
   ngOnInit(): void {}
 
+  public getQuestionDisplay(): string {
+    return `${this.answerLanguage}: ${this.answerSpelling} | ${this.questionLanguage}: `;
+  }
+
   public startTraining(): void {
     this.wordlistTrainingService.startTraining();
     this.currentQuestion = this.wordlistTrainingService.nextQuestion();
@@ -44,10 +48,22 @@ export class TrainingComponent implements OnInit {
       return;
     }
 
+    this.setQuestionAndAnswerWordInformation();
+
     this.hasStarted = true;
     this.questionMode = true;
 
     console.log('Started');
+  }
+
+  private setQuestionAndAnswerWordInformation(): void {
+    if (this.currentQuestion === null) {
+      return;
+    }
+    this.answerLanguage = this.currentQuestion.answerWord.language;
+    this.answerSpelling = this.currentQuestion.answerWord.spelling;
+    this.questionLanguage = this.currentQuestion.questionWord.language;
+    this.questionSpelling = '';
   }
 
   public stopTraining(): void {
@@ -68,7 +84,8 @@ export class TrainingComponent implements OnInit {
     this.questionMode = true;
   }
 
-  public checkAnswer(answer: string): void {
+  public checkAnswer(): void {
+    const answer = this.questionSpelling;
     if (answer === null || answer === undefined || answer.length < 2) {
       this.display =
         'Please enter a word that is at least two characters long.';
