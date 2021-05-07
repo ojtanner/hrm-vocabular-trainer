@@ -1,4 +1,4 @@
-import { ThisReceiver } from '@angular/compiler';
+import { ThisReceiver, ThrowStmt } from '@angular/compiler';
 import { Component, OnInit } from '@angular/core';
 import { Language } from '../shared/models/Language.enum';
 import { WordPairQuestion } from '../shared/models/WordPairQuestion';
@@ -72,7 +72,9 @@ export class TrainingComponent implements OnInit {
   }
 
   public nextQuestion(): void {
+    console.log('Next question');
     const nextQuestion: WordPairQuestion | null = this.wordlistTrainingService.nextQuestion();
+    console.log(nextQuestion);
 
     if (nextQuestion === null) {
       this.resetInitialState();
@@ -81,6 +83,7 @@ export class TrainingComponent implements OnInit {
     }
 
     this.currentQuestion = nextQuestion;
+    this.setQuestionAndAnswerWordInformation();
     this.questionMode = true;
   }
 

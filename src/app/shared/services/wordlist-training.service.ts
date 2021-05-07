@@ -23,8 +23,11 @@ export class WordlistTrainingService {
   }
 
   public nextQuestion(): WordPairQuestion | null {
+    console.log('nextQuestion() start');
     const currentQuestion = this.currentQuestion;
+
     this.setNextQuestion();
+
     return currentQuestion;
   }
 
