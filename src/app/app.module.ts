@@ -11,6 +11,7 @@ import { AssessmentComponent } from './assessment/assessment.component';
 import { WordlistComponent } from './wordlist/wordlist.component';
 import { WordpairComponent } from './wordpair/wordpair.component';
 import { WordlistInputComponent } from './wordlist-input/wordlist-input.component';
+import { QuestionaireComponent } from './questionaire/questionaire.component';
 
 @NgModule({
   declarations: [
@@ -22,6 +23,7 @@ import { WordlistInputComponent } from './wordlist-input/wordlist-input.componen
     WordlistComponent,
     WordpairComponent,
     WordlistInputComponent,
+    QuestionaireComponent,
   ],
   imports: [BrowserModule, AppRoutingModule, FormsModule],
   providers: [],

@@ -1,0 +1,25 @@
+<button *ngIf="!this.hasStarted" (click)="startQuestionaire()">
+  {{ this.startQuestionaireText() }}
+</button>
+<button *ngIf="this.hasStarted" (click)="stopQuestionaire()">
+  {{ this.stopQuestionaireText() }}
+</button>
+<p>{{ this.problemMessage() }}</p>
+<div *ngIf="!this.hasStarted; else questionDisplay">
+  <p>{{ this.greetingText() }}</p>
+</div>
+<ng-template #questionDisplay>
+  <div *ngIf="this.questionMode; else pauseMode">
+    <p>Next Question</p>
+    <p>{{ this.getQuestionDisplay() }}</p>
+    <input type="text" [(ngModel)]="this.questionSpelling" />
+    <button type="submit" (click)="checkAnswer()">Submit your Answer</button>
+  </div>
+  <p *ngIf="this.isTraining">{{ this.display }}</p>
+</ng-template>
+
+<ng-template #pauseMode>
+  <button (click)="nextQuestion()">
+    {{ this.nextQuestionText() }}
+  </button>
+</ng-template>

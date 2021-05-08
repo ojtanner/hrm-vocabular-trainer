@@ -17,7 +17,7 @@ export class WordlistQuestionaireService {
     this.totalNumberOfWordPairs = 0;
   }
 
-  public startTraining(): void {
+  public startQuestionaire(): void {
     this.wordPairs = [...this.wordlistManagementService.getWordPairs()];
     this.totalNumberOfWordPairs = this.wordPairs.length;
     this.setNextQuestion();
