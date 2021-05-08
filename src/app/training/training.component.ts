@@ -2,7 +2,7 @@ import { ThisReceiver, ThrowStmt } from '@angular/compiler';
 import { Component, OnInit } from '@angular/core';
 import { Language } from '../shared/models/Language.enum';
 import { WordPairQuestion } from '../shared/models/WordPairQuestion';
-import { WordlistTrainingService } from '../shared/services/wordlist-training.service';
+import { WordlistQuestionaireService } from '../shared/services/wordlist-questionaire.service';
 
 @Component({
   selector: 'app-training',
@@ -22,7 +22,9 @@ export class TrainingComponent implements OnInit {
   public totalQuestions: number;
   public answeredQuesetions: number;
 
-  constructor(private wordlistTrainingService: WordlistTrainingService) {
+  constructor(
+    private wordListQuestionaireService: WordlistQuestionaireService
+  ) {
     // Note: TS does not recognize initialization method here and complains about uninitialized instance variables.
     this.currentQuestion = null;
     this.questionLanguage = null;
@@ -38,8 +40,12 @@ export class TrainingComponent implements OnInit {
 
   ngOnInit(): void {}
 
-  public getQuestionProgress(): string {
-    return `${this.answeredQuesetions} of ${this.totalQuestions} questions answered`;
+  public getNextQuestionButtonText(): string {
+    if (this.totalQuestions === this.answeredQuesetions) {
+      return 'Finish Training';
+    } else {
+      return 'Next Question';
+    }
   }
 
   public getQuestionDisplay(): string {
@@ -47,8 +53,8 @@ export class TrainingComponent implements OnInit {
   }
 
   public startTraining(): void {
-    this.wordlistTrainingService.startTraining();
-    this.currentQuestion = this.wordlistTrainingService.nextQuestion();
+    this.wordListQuestionaireService.startTraining();
+    this.currentQuestion = this.wordListQuestionaireService.nextQuestion();
 
     if (this.currentQuestion === null) {
       this.display =
@@ -60,8 +66,8 @@ export class TrainingComponent implements OnInit {
 
     this.hasStarted = true;
     this.questionMode = true;
-
-    this.totalQuestions = this.wordlistTrainingService.getTotalNumberOfWordPairs();
+    this.display = '';
+    this.totalQuestions = this.wordListQuestionaireService.getTotalNumberOfWordPairs();
     this.answeredQuesetions = 0;
   }
 
@@ -77,12 +83,11 @@ export class TrainingComponent implements OnInit {
 
   public stopTraining(): void {
     this.resetInitialState();
-    this.display = 'Training was stopped.';
   }
 
   public nextQuestion(): void {
     console.log('Next question');
-    const nextQuestion: WordPairQuestion | null = this.wordlistTrainingService.nextQuestion();
+    const nextQuestion: WordPairQuestion | null = this.wordListQuestionaireService.nextQuestion();
     this.display = '';
 
     if (nextQuestion === null) {

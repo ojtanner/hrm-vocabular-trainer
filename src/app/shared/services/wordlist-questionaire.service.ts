@@ -6,7 +6,7 @@ import { WordlistManagementService } from './wordlist-management.service';
 @Injectable({
   providedIn: 'root',
 })
-export class WordlistTrainingService {
+export class WordlistQuestionaireService {
   private wordPairs: WordPair[];
   private totalNumberOfWordPairs: number;
   public currentQuestion: WordPairQuestion | null;
