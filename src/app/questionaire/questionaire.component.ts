@@ -40,39 +40,35 @@ export class QuestionaireComponent implements OnInit {
     }
   }
 
-  public progressMessage(): string {
+  public getProgressMessage(): string {
     return `Question ${
       this.wordListQuestionaireService.getNumberOfQuestionsAnswered() + 1
     } of ${this.wordListQuestionaireService.getNumberOfQuestionsTotal()}`;
   }
 
-  public problemMessage(): string {
-    if (this.wordListQuestionaireService.getNumberOfQuestionsTotal() === 0) {
+  public getProblemMessage(): string {
+    if (!this.wordListQuestionaireService.canBeStarted()) {
       return 'Empty WordList. Please enter at least one WordPair so that you can start.';
     } else {
       return '';
     }
   }
 
-  public greetingText(): string {
+  public getGreetingMessage(): string {
     return this.isTraining === true
       ? 'Click Start Training to begin your training. You can stop at any time.'
       : 'Click Start Assessment to begin your assessment. Keep in mind that you will have to stay on this page until you finish or prematurely end your assessment.';
   }
 
-  public startQuestionaireText(): string {
+  public getStartQuestionaireText(): string {
     return this.isTraining === true ? 'Start Training' : 'Start Assessment';
   }
 
-  public stopQuestionaireText(): string {
+  public getStopQuestionaireText(): string {
     return this.isTraining === true ? 'Stop Training' : 'Stop Assessment';
   }
 
-  public nextQuestionText(): string {
-    return 'Next Question';
-  }
-
-  public getQuestionDisplay(): string {
+  public getQuestionDisplayText(): string {
     return `${this.answerLanguage}: ${this.answerSpelling} | ${this.questionLanguage}: `;
   }
   // Messages End

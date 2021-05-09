@@ -1,21 +1,23 @@
 <button *ngIf="!this.hasStarted()" (click)="startQuestionaire()">
-  {{ this.startQuestionaireText() }}
+  {{ this.getStartQuestionaireText() }}
 </button>
 
 <button *ngIf="this.hasStarted()" (click)="stopQuestionaire()">
-  {{ this.stopQuestionaireText() }}
+  {{ this.getStopQuestionaireText() }}
 </button>
 
-<p>{{ this.problemMessage() }}</p>
+<p>{{ this.getProblemMessage() }}</p>
 
 <div *ngIf="!this.hasStarted(); else questionDisplay">
-  <p>{{ this.greetingText() }}</p>
+  <p>{{ this.getGreetingMessage() }}</p>
 </div>
 
 <ng-template #questionDisplay>
-  <p>{{ this.progressMessage() }}</p>
-  <p>{{ this.getQuestionDisplay() }}</p>
+  <p>{{ this.getProgressMessage() }}</p>
+  <p>{{ this.getQuestionDisplayText() }}</p>
   <input type="text" [(ngModel)]="this.questionSpelling" />
-  <button type="submit" (click)="checkAnswer()">{{ this.getAnswerSubmitText() }}</button>
+  <button type="submit" (click)="checkAnswer()">
+    {{ this.getAnswerSubmitText() }}
+  </button>
   <p *ngIf="this.isTraining">{{ this.display }}</p>
 </ng-template>
