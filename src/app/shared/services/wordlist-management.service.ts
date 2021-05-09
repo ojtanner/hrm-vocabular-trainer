@@ -57,6 +57,10 @@ export class WordlistManagementService {
     return this.wordList.wordPairs;
   }
 
+  public getWordPairsCopy(): WordPair[] {
+    return [...this.wordList.wordPairs];
+  }
+
   private setWordListLanguages(): void {
     this.currentLanguages.next(this.wordList.languages);
   }

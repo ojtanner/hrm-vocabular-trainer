@@ -9,39 +9,45 @@ import { WordlistQuestionaireService } from '../shared/services/wordlist-questio
   styleUrls: ['./questionaire.component.css'],
 })
 export class QuestionaireComponent implements OnInit {
-  private currentQuestion: WordPairQuestion | null;
+  private currentQuestion: WordPairQuestion | null = null;
   public questionLanguage: Language | null;
   public questionSpelling: string | null;
   public answerLanguage: Language | null;
   public answerSpelling: string | null;
 
-  public hasStarted: boolean;
-  public questionMode: boolean;
   public display: string;
-  public totalQuestions: number;
-  public answeredQuesetions: number;
   @Input() public isTraining!: boolean;
 
   constructor(
     private wordListQuestionaireService: WordlistQuestionaireService
   ) {
     // Note: TS does not recognize initialization method here and complains about uninitialized instance variables.
-    this.currentQuestion = null;
     this.questionLanguage = null;
     this.questionSpelling = null;
     this.answerLanguage = null;
     this.answerSpelling = null;
-    this.hasStarted = false;
-    this.questionMode = false;
     this.display = '';
-    this.totalQuestions = 0;
-    this.answeredQuesetions = 0;
   }
 
   ngOnInit(): void {}
 
+  // Messages Start
+  public getAnswerSubmitText(): string {
+    if (this.wordListQuestionaireService.isLastQuestion()) {
+      return 'Submit answer and finish Questionaire';
+    } else {
+      return 'Submit answer';
+    }
+  }
+
+  public progressMessage(): string {
+    return `Question ${
+      this.wordListQuestionaireService.getNumberOfQuestionsAnswered() + 1
+    } of ${this.wordListQuestionaireService.getNumberOfQuestionsTotal()}`;
+  }
+
   public problemMessage(): string {
-    if (this.totalQuestions === 0) {
+    if (this.wordListQuestionaireService.getNumberOfQuestionsTotal() === 0) {
       return 'Empty WordList. Please enter at least one WordPair so that you can start.';
     } else {
       return '';
@@ -69,23 +75,25 @@ export class QuestionaireComponent implements OnInit {
   public getQuestionDisplay(): string {
     return `${this.answerLanguage}: ${this.answerSpelling} | ${this.questionLanguage}: `;
   }
+  // Messages End
+
+  public hasStarted(): boolean {
+    return this.wordListQuestionaireService.questionaireIsInProgress();
+  }
 
   public startQuestionaire(): void {
-    this.wordListQuestionaireService.startQuestionaire();
-    this.currentQuestion = this.wordListQuestionaireService.nextQuestion();
+    this.wordListQuestionaireService.startQuestionaire(this.isTraining);
+    this.currentQuestion = this.wordListQuestionaireService.getCurrentQuestion();
+    console.log('Current question');
+    console.log(this.currentQuestion);
 
     if (this.currentQuestion === null) {
-      this.totalQuestions = -1;
       return;
     }
 
     this.setQuestionAndAnswerWordInformation();
 
-    this.hasStarted = true;
-    this.questionMode = true;
     this.display = '';
-    this.totalQuestions = this.wordListQuestionaireService.getTotalNumberOfWordPairs();
-    this.answeredQuesetions = 0;
   }
 
   private setQuestionAndAnswerWordInformation(): void {
@@ -100,43 +108,29 @@ export class QuestionaireComponent implements OnInit {
 
   public stopQuestionaire(): void {
     this.resetInitialState();
-  }
-
-  public nextQuestion(): void {
-    console.log('Next question');
-    const nextQuestion: WordPairQuestion | null = this.wordListQuestionaireService.nextQuestion();
-    this.display = '';
-
-    if (nextQuestion === null) {
-      this.resetInitialState();
-      this.display = '';
-      return;
-    }
-
-    this.currentQuestion = nextQuestion;
-    this.setQuestionAndAnswerWordInformation();
-    this.questionMode = true;
-    this.answeredQuesetions += 1;
+    this.wordListQuestionaireService.stopQuestionaire();
   }
 
   public checkAnswer(): void {
     const answer = this.questionSpelling;
+
     if (answer === null || answer === undefined || answer.length < 2) {
       this.display =
         'Please enter a word that is at least two characters long.';
       return;
     }
 
-    if (
-      answer.toLowerCase() ===
-      this.currentQuestion?.questionWord.spelling.toLowerCase()
-    ) {
+    const result = this.wordListQuestionaireService.processAnswer(answer);
+
+    if (result === true) {
       this.display = 'Correct answer. Good job!';
     } else {
       this.display = `Incorrect answer. You entered ${answer} but the correct answer is ${this.currentQuestion?.questionWord.spelling}`;
     }
 
-    this.questionMode = false;
+    this.currentQuestion = this.wordListQuestionaireService.getCurrentQuestion();
+    this.setQuestionAndAnswerWordInformation();
+    this.questionSpelling = '';
   }
 
   private resetInitialState(): void {
@@ -145,8 +139,6 @@ export class QuestionaireComponent implements OnInit {
     this.questionSpelling = null;
     this.answerLanguage = null;
     this.answerSpelling = null;
-    this.hasStarted = false;
-    this.questionMode = false;
     this.display = '';
   }
 }
