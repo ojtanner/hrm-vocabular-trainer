@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { IncorrectWordPairQuestion } from '../models/IncorrectWordPairQuestion';
 import { WordPair } from '../models/WordPair';
 import { WordPairQuestion } from '../models/WordPairQuestion';
 import { WordlistManagementService } from './wordlist-management.service';
@@ -7,15 +8,6 @@ import { WordlistManagementService } from './wordlist-management.service';
   providedIn: 'root',
 })
 export class WordlistQuestionaireService {
-  /**
-   * Was macht der?
-   * Fragen-Liste initialisieren
-   * Momentane Frage aufbereiten
-   * Antwort überprüfen
-   * Nächste Frage geben
-   *
-   */
-
   private questions: WordPair[] = [];
   private currentQuestion: WordPairQuestion | null = null;
 
@@ -25,9 +17,9 @@ export class WordlistQuestionaireService {
   private isInProgress = false;
   private isTraining = true;
 
-  constructor(private wordlistManagementService: WordlistManagementService) {
-    console.log(this);
-  }
+  private wrongAnswers: IncorrectWordPairQuestion[] = [];
+
+  constructor(private wordlistManagementService: WordlistManagementService) {}
 
   public questionaireIsInProgress(): boolean {
     return this.isInProgress;
@@ -51,6 +43,10 @@ export class WordlistQuestionaireService {
 
   public isLastQuestion(): boolean {
     return this.numberOfQuestionsAnswered + 1 === this.numberOfQuestionsTotal;
+  }
+
+  public isFinished(): boolean {
+    return this.numberOfQuestionsAnswered === this.numberOfQuestionsTotal;
   }
 
   public startQuestionaire(isTraining = true): void {
@@ -78,11 +74,48 @@ export class WordlistQuestionaireService {
   }
 
   public processAnswer(answer: string): boolean {
-    console.log('Provided answer: ' + answer);
     this.numberOfQuestionsAnswered += 1;
     const result = this.checkAnswer(answer);
+    if (result === false) {
+      this.addWrongAnswer(answer);
+    }
     this.setNextQuestion();
     return result;
+  }
+
+  public generateQuestionaireStatistics(): string {
+    let message = 'Your results:\n';
+    message += `${this.numberOfQuestionsTotal - this.wrongAnswers.length} of ${
+      this.numberOfQuestionsTotal
+    } answers where correct\n\n`;
+
+    if (this.wrongAnswers.length !== 0) {
+      message += 'Your incorrect answers:\n';
+      message += this.wrongAnswers.reduce(
+        (acc: string, answer: IncorrectWordPairQuestion) => {
+          acc += answer.toString();
+          acc += '\n';
+          return acc;
+        },
+        ''
+      );
+    }
+
+    return message;
+  }
+
+  private addWrongAnswer(answer: string): void {
+    const questionWord = this.currentQuestion?.answerWord;
+    const answerWord = this.currentQuestion?.questionWord;
+
+    if (answerWord !== undefined && questionWord !== undefined) {
+      const incorrectAnswer = new IncorrectWordPairQuestion(
+        questionWord,
+        answerWord,
+        answer
+      );
+      this.wrongAnswers.push(incorrectAnswer);
+    }
   }
 
   private checkAnswer(answer: string): boolean {

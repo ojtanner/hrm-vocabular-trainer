@@ -21,3 +21,7 @@
   </button>
   <p *ngIf="this.isTraining">{{ this.display }}</p>
 </ng-template>
+
+<p *ngIf="this.isFinishedAssessment()">
+  {{ this.getQuestionaireStatisticsMessage() }}
+</p>

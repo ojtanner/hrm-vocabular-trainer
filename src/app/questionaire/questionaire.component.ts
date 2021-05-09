@@ -71,7 +71,20 @@ export class QuestionaireComponent implements OnInit {
   public getQuestionDisplayText(): string {
     return `${this.answerLanguage}: ${this.answerSpelling} | ${this.questionLanguage}: `;
   }
+
+  public getQuestionaireStatisticsMessage(): string {
+    return this.wordListQuestionaireService.generateQuestionaireStatistics();
+  }
   // Messages End
+
+  public isFinishedAssessment(): boolean {
+    console.log(this.wordListQuestionaireService.isFinished());
+    console.log(this.wordListQuestionaireService.questionaireIsTraining());
+    return (
+      this.wordListQuestionaireService.isFinished() &&
+      !this.wordListQuestionaireService.questionaireIsTraining()
+    );
+  }
 
   public hasStarted(): boolean {
     return this.wordListQuestionaireService.questionaireIsInProgress();
