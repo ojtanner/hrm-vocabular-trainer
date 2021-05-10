@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { languageToString } from '../shared/models/Language.enum';
-import { Word } from '../shared/models/Word';
-import { WordPair } from '../shared/models/WordPair';
+import { languageToString } from '../../../shared/models/Language.enum';
+import { Word } from '../../../shared/models/Word';
+import { WordPair } from '../../../shared/models/WordPair';
 
 @Component({
   selector: 'app-wordpair',

@@ -8,9 +8,9 @@ import { HeaderComponent } from './shared/header/header.component';
 import { WordlistManagementComponent } from './wordlist-management/wordlist-management.component';
 import { TrainingComponent } from './training/training.component';
 import { AssessmentComponent } from './assessment/assessment.component';
-import { WordlistComponent } from './wordlist/wordlist.component';
-import { WordpairComponent } from './wordpair/wordpair.component';
-import { WordlistInputComponent } from './wordlist-input/wordlist-input.component';
+import { WordlistComponent } from './wordlist-management/wordlist/wordlist.component';
+import { WordpairComponent } from './wordlist-management/wordlist/wordpair/wordpair.component';
+import { WordlistInputComponent } from './wordlist-management/wordlist-input/wordlist-input.component';
 import { QuestionaireComponent } from './questionaire/questionaire.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 

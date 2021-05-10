@@ -1,9 +1,9 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { Language } from '../shared/models/Language.enum';
-import { WordList } from '../shared/models/WordList';
-import { WordPair } from '../shared/models/WordPair';
-import { WordlistManagementService } from '../shared/services/wordlist-management.service';
+import { Language } from '../../shared/models/Language.enum';
+import { WordList } from '../../shared/models/WordList';
+import { WordPair } from '../../shared/models/WordPair';
+import { WordlistManagementService } from '../../shared/services/wordlist-management.service';
 
 @Component({
   selector: 'app-wordlist',
