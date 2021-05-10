@@ -12,6 +12,7 @@ import { WordlistComponent } from './wordlist/wordlist.component';
 import { WordpairComponent } from './wordpair/wordpair.component';
 import { WordlistInputComponent } from './wordlist-input/wordlist-input.component';
 import { QuestionaireComponent } from './questionaire/questionaire.component';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   declarations: [
@@ -25,7 +26,7 @@ import { QuestionaireComponent } from './questionaire/questionaire.component';
     WordlistInputComponent,
     QuestionaireComponent,
   ],
-  imports: [BrowserModule, AppRoutingModule, FormsModule],
+  imports: [BrowserModule, AppRoutingModule, FormsModule, NgbModule],
   providers: [],
   bootstrap: [AppComponent],
 })
