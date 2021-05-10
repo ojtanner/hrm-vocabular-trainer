@@ -32,7 +32,6 @@ export class QuestionaireComponent implements OnInit {
 
   ngOnInit(): void {}
 
-  // Messages Start
   public getAnswerSubmitText(): string {
     if (this.wordListQuestionaireService.isLastQuestion()) {
       return 'Submit answer and finish Questionaire';
@@ -80,7 +79,10 @@ export class QuestionaireComponent implements OnInit {
   public getQuestionaireStatisticsMessage(): string {
     return this.wordListQuestionaireService.generateQuestionaireStatistics();
   }
-  // Messages End
+
+  public getHeaderText(): string {
+    return this.isTraining === true ? 'Training' : 'Assessment';
+  }
 
   public hasDisplayText(): boolean {
     return this.display.length > 0;
