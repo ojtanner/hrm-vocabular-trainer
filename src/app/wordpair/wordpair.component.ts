@@ -33,6 +33,10 @@ export class WordpairComponent implements OnInit {
     this.errorDisplay = '';
   }
 
+  public hasErrorDisplay(): boolean {
+    return this.errorDisplay.length > 0;
+  }
+
   public getLeftLanguageText(): string {
     return languageToString(this.wordPair.left.language);
   }

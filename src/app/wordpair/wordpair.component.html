@@ -1,7 +1,7 @@
 <div>
   <form>
-    <div>
-      <b>{{ this.getLeftLanguageText() }}</b>
+    <div class="form-group">
+      <b class="mr-3">{{ this.getLeftLanguageText() }}</b>
       <input
         [disabled]="!this.isEditable"
         type="text"
@@ -9,8 +9,8 @@
         [(ngModel)]="this.leftWordSpelling"
       />
     </div>
-    <div>
-      <b>{{ this.getRightLanguageText() }}</b>
+    <div class="form-group">
+      <b class="mr-3">{{ this.getRightLanguageText() }}</b>
       <input
         [disabled]="!this.isEditable"
         type="text"
@@ -20,15 +20,25 @@
     </div>
 
     <div *ngIf="!this.isEditable">
-      <button (click)="editWordPair()">Edit</button>
-      <button (click)="deleteWordPair()">Delete</button>
+      <button class="btn btn-primary btn-sm" (click)="editWordPair()">
+        Edit
+      </button>
+      <button class="btn btn-danger btn-sm" (click)="deleteWordPair()">
+        Delete
+      </button>
     </div>
 
     <div *ngIf="this.isEditable">
-      <button (click)="cancelEdit()">Cancel Edit</button>
-      <button (click)="updateWordPair()">Save</button>
+      <button class="btn btn-warning btn-sm" (click)="cancelEdit()">
+        Cancel Edit
+      </button>
+      <button class="btn btn-info btn-sm" (click)="updateWordPair()">
+        Save
+      </button>
     </div>
 
-    <p>{{ this.errorDisplay }}</p>
+    <div *ngIf="this.hasErrorDisplay()" class="alert alert-danger">
+      <p>{{ this.errorDisplay }}</p>
+    </div>
   </form>
 </div>
