@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { WordList } from '../models/WordList';
 import { WordPair } from '../models/WordPair';
 import { Word } from '../models/Word';
-import { Language } from '../models/Language.enum';
+import { Language, languageToString } from '../models/Language.enum';
 import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
@@ -59,6 +59,53 @@ export class WordlistManagementService {
 
   public getWordPairsCopy(): WordPair[] {
     return [...this.wordList.wordPairs];
+  }
+
+  // Note: Should be Sort by Locale but this is not part of the JS-API
+  public getSortedWordList(sortingLanguage: Language | null): WordList {
+    if (sortingLanguage === null) {
+      return this.wordList;
+    }
+
+    if (this.currentLanguages.value === null) {
+      return this.wordList;
+    }
+
+    try {
+      const comparator = this.compareByLocale(
+        sortingLanguage,
+        this.currentLanguages.value
+      );
+
+      this.wordList.wordPairs.sort(comparator);
+      return this.wordList;
+    } catch (error) {
+      console.error(error);
+      return this.wordList;
+    }
+  }
+
+  private compareByLocale(
+    locale: Language,
+    currentLanguages: [Language, Language]
+  ): (a: WordPair, b: WordPair) => number {
+    if (!currentLanguages.includes(locale)) {
+      throw new Error(
+        `Can not sort languages ${languageToString(
+          currentLanguages[0]
+        )} and ${languageToString(currentLanguages[1])} by locale ${locale}`
+      );
+    }
+
+    return (a: WordPair, b: WordPair): number => {
+      const aSpelling =
+        a.left.language === locale ? a.left.spelling : a.right.spelling;
+      const bSpelling =
+        b.left.spelling === locale ? b.left.spelling : b.right.spelling;
+      return aSpelling.localeCompare(bSpelling, locale, {
+        sensitivity: 'base',
+      });
+    };
   }
 
   private setWordListLanguages(): void {

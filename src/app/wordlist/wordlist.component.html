@@ -1,10 +1,10 @@
 <div>
   <h1>{{ "Word Pairs:" }}</h1>
-  <button (click)="sortBySelectedLanguage()">Sort by Language</button>
+  <button (click)="sortWordList()">Sort by Language</button>
   <select
     name="leftWordLanguage"
     id="leftWordLanguage"
-    [(ngModel)]="this.wordListLanguages"
+    [(ngModel)]="this.sortingLanguage"
   >
     <option
       *ngFor="let language of this.wordListLanguages | keyvalue"
