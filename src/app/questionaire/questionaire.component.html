@@ -1,28 +1,55 @@
-<button *ngIf="!this.hasStarted()" (click)="startQuestionaire()">
-  {{ this.getStartQuestionaireText() }}
-</button>
+<div class="container border mt-3">
+  <h3 class="text-center">Training</h3>
 
-<button *ngIf="this.hasStarted()" (click)="stopQuestionaire()">
-  {{ this.getStopQuestionaireText() }}
-</button>
+  <div
+    class="text-center mt-3 alert alert-info"
+    *ngIf="!this.hasStarted(); else questionDisplay"
+  >
+    <p>{{ this.getGreetingMessage() }}</p>
+  </div>
 
-<p>{{ this.getProblemMessage() }}</p>
+  <div class="col text-center mt-3">
+    <button
+      class="btn btn-primary btn-sm"
+      *ngIf="!this.hasStarted()"
+      (click)="startQuestionaire()"
+    >
+      {{ this.getStartQuestionaireText() }}
+    </button>
 
-<div *ngIf="!this.hasStarted(); else questionDisplay">
-  <p>{{ this.getGreetingMessage() }}</p>
+    <button
+      class="btn btn-danger btn-sm"
+      *ngIf="this.hasStarted()"
+      (click)="stopQuestionaire()"
+    >
+      {{ this.getStopQuestionaireText() }}
+    </button>
+  </div>
+
+  <div class="alert alert-danger" *ngIf="this.hasProblems()">
+    <p>{{ this.getProblemMessage() }}</p>
+  </div>
+
+  <div col="row justify-content-center">
+    <div class="col text-center mt-3">
+      <ng-template #questionDisplay>
+        <p>{{ this.getProgressMessage() }}</p>
+        <p>{{ this.getQuestionDisplayText() }}</p>
+        <input type="text" [(ngModel)]="this.questionSpelling" />
+        <button
+          class="btn btn-info btn-sm"
+          type="submit"
+          (click)="checkAnswer()"
+        >
+          {{ this.getAnswerSubmitText() }}
+        </button>
+      </ng-template>
+    </div>
+  </div>
+
+  <p *ngIf="this.isTraining">{{ this.display }}</p>
+
+  <p class="alert alert-info" *ngIf="this.isFinishedAssessment()">
+    {{ this.getQuestionaireStatisticsMessage() }}
+  </p>
 </div>
-
-<ng-template #questionDisplay>
-  <p>{{ this.getProgressMessage() }}</p>
-  <p>{{ this.getQuestionDisplayText() }}</p>
-  <input type="text" [(ngModel)]="this.questionSpelling" />
-  <button type="submit" (click)="checkAnswer()">
-    {{ this.getAnswerSubmitText() }}
-  </button>
-</ng-template>
-
-<p *ngIf="this.isTraining">{{ this.display }}</p>
-
-<p *ngIf="this.isFinishedAssessment()">
-  {{ this.getQuestionaireStatisticsMessage() }}
-</p>

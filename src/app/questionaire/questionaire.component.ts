@@ -27,6 +27,7 @@ export class QuestionaireComponent implements OnInit {
     this.answerLanguage = null;
     this.answerSpelling = null;
     this.display = '';
+    this.wordListQuestionaireService.resetQuestionaire();
   }
 
   ngOnInit(): void {}
@@ -44,6 +45,10 @@ export class QuestionaireComponent implements OnInit {
     return `Question ${
       this.wordListQuestionaireService.getNumberOfQuestionsAnswered() + 1
     } of ${this.wordListQuestionaireService.getNumberOfQuestionsTotal()}`;
+  }
+
+  public hasProblems(): boolean {
+    return !this.wordListQuestionaireService.canBeStarted();
   }
 
   public getProblemMessage(): string {
@@ -76,6 +81,10 @@ export class QuestionaireComponent implements OnInit {
     return this.wordListQuestionaireService.generateQuestionaireStatistics();
   }
   // Messages End
+
+  public hasDisplayText(): boolean {
+    return this.display.length > 0;
+  }
 
   public isFinishedAssessment(): boolean {
     return (
