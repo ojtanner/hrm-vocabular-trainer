@@ -117,7 +117,7 @@ export class QuestionaireComponent implements OnInit {
 
   public stopQuestionaire(): void {
     this.resetInitialState();
-    this.wordListQuestionaireService.stopQuestionaire();
+    this.wordListQuestionaireService.resetQuestionaire();
   }
 
   public checkAnswer(): void {

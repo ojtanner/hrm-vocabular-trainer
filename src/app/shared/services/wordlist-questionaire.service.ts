@@ -50,6 +50,7 @@ export class WordlistQuestionaireService {
   }
 
   public startQuestionaire(isTraining = true): void {
+    this.resetQuestionaire();
     this.questions = this.wordlistManagementService.getWordPairsCopy();
 
     if (this.questions.length > 0) {
@@ -60,7 +61,7 @@ export class WordlistQuestionaireService {
     }
   }
 
-  public stopQuestionaire(): void {
+  public resetQuestionaire(): void {
     this.questions = [];
     this.numberOfQuestionsTotal = 0;
     this.numberOfQuestionsAnswered = 0;
@@ -79,6 +80,7 @@ export class WordlistQuestionaireService {
     if (result === false) {
       this.addWrongAnswer(answer);
     }
+
     this.setNextQuestion();
     return result;
   }
@@ -129,16 +131,22 @@ export class WordlistQuestionaireService {
   }
 
   private setNextQuestion(): void {
-    const randomWordPair: WordPair | null = this.extractRandomWordPair();
+    let wordPair: WordPair | null;
 
-    if (randomWordPair === null) {
+    if (this.isTraining) {
+      wordPair = this.extractFirstWordPair();
+    } else {
+      wordPair = this.extractRandomWordPair();
+    }
+
+    if (wordPair === null) {
       this.currentQuestion = null;
       this.isInProgress = false;
       return;
     }
 
-    const leftWord = randomWordPair.left;
-    const rightWord = randomWordPair.right;
+    const leftWord = wordPair.left;
+    const rightWord = wordPair.right;
 
     const randomZeroOrOne: number = Math.random() < 0.5 ? 0 : 1;
 
@@ -147,6 +155,16 @@ export class WordlistQuestionaireService {
     } else {
       this.currentQuestion = new WordPairQuestion(rightWord, leftWord);
     }
+  }
+
+  private extractFirstWordPair(): WordPair | null {
+    if (this.questions.length === 0) {
+      return null;
+    }
+
+    const firstWordPair: WordPair | undefined = this.questions.shift();
+
+    return firstWordPair === undefined ? null : firstWordPair;
   }
 
   private extractRandomWordPair(): WordPair | null {
@@ -156,77 +174,4 @@ export class WordlistQuestionaireService {
     const randomIndex = Math.floor(Math.random() * this.questions.length);
     return this.questions.splice(randomIndex, 1)[0];
   }
-
-  /*
-  private wordPairs: WordPair[];
-  private totalNumberOfWordPairs: number;
-  public currentQuestion: WordPairQuestion | null;
-  public inProgress: boolean;
-  public isTraining: boolean;
-
-  constructor(private wordlistManagementService: WordlistManagementService) {
-    this.wordPairs = [];
-    this.currentQuestion = null;
-    this.totalNumberOfWordPairs = 0;
-    this.inProgress = false;
-    this.isTraining = true;
-  }
-
-  public startQuestionaire(isTraining = true): void {
-    this.wordPairs = [...this.wordlistManagementService.getWordPairs()];
-    this.totalNumberOfWordPairs = this.wordPairs.length;
-    this.setNextQuestion();
-    this.inProgress = true;
-    this.isTraining = isTraining;
-  }
-
-  public nextQuestion(): WordPairQuestion | null {
-    const currentQuestion = this.currentQuestion;
-    this.setNextQuestion();
-    return currentQuestion;
-  }
-
-  public getTotalNumberOfWordPairs(): number {
-    return this.totalNumberOfWordPairs;
-  }
-
-  public getRemainingNumberOfWordPairs(): number {
-    return this.wordPairs.length;
-  }
-
-  public isQuestionaireInProgress(): boolean {
-    return this.inProgress;
-  }
-
-  private setNextQuestion(): void {
-    const randomWordPair: WordPair | null = this.extractRandomWordPair();
-
-    if (randomWordPair === null) {
-      this.currentQuestion = null;
-      this.inProgress = false;
-      return;
-    }
-
-    const leftWord = randomWordPair.left;
-    const rightWord = randomWordPair.right;
-
-    const randomZeroOrOne: number = Math.random() < 0.5 ? 0 : 1;
-
-    if (randomZeroOrOne === 0) {
-      this.currentQuestion = new WordPairQuestion(leftWord, rightWord);
-    } else {
-      this.currentQuestion = new WordPairQuestion(rightWord, leftWord);
-    }
-  }
-
-  private extractRandomWordPair(): WordPair | null {
-    if (this.wordPairs.length === 0) {
-      return null;
-    }
-
-    const randomIndex = Math.floor(Math.random() * this.wordPairs.length);
-
-    return this.wordPairs.splice(randomIndex, 1)[0];
-  }
-  */
 }

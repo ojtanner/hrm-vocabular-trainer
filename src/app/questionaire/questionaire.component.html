@@ -19,8 +19,9 @@
   <button type="submit" (click)="checkAnswer()">
     {{ this.getAnswerSubmitText() }}
   </button>
-  <p *ngIf="this.isTraining">{{ this.display }}</p>
 </ng-template>
+
+<p *ngIf="this.isTraining">{{ this.display }}</p>
 
 <p *ngIf="this.isFinishedAssessment()">
   {{ this.getQuestionaireStatisticsMessage() }}
