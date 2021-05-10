@@ -78,8 +78,6 @@ export class QuestionaireComponent implements OnInit {
   // Messages End
 
   public isFinishedAssessment(): boolean {
-    console.log(this.wordListQuestionaireService.isFinished());
-    console.log(this.wordListQuestionaireService.questionaireIsTraining());
     return (
       this.wordListQuestionaireService.isFinished() &&
       !this.wordListQuestionaireService.questionaireIsTraining()
@@ -93,9 +91,6 @@ export class QuestionaireComponent implements OnInit {
   public startQuestionaire(): void {
     this.wordListQuestionaireService.startQuestionaire(this.isTraining);
     this.currentQuestion = this.wordListQuestionaireService.getCurrentQuestion();
-    console.log('Current question');
-    console.log(this.currentQuestion);
-
     if (this.currentQuestion === null) {
       return;
     }

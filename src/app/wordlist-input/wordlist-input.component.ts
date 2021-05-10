@@ -27,11 +27,6 @@ export class WordlistInputComponent implements OnInit {
   ngOnInit(): void {}
 
   public submitWordPair(): void {
-    console.log(this.leftLanguage);
-    console.log(this.leftSpelling);
-    console.log(this.rightLanguage);
-    console.log(this.rightSpelling);
-
     try {
       const newWordPair = new WordPair(
         new Word(this.leftLanguage, this.leftSpelling),

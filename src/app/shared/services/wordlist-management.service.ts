@@ -18,9 +18,6 @@ export class WordlistManagementService {
   constructor() {
     this.wordList = new WordList();
     this.retrieveFromLocalStorage();
-
-    console.log('Inside constructor');
-    console.log(this.wordList);
   }
 
   public addWordPair(wordPair: WordPair): void {
@@ -36,6 +33,15 @@ export class WordlistManagementService {
 
     if (this.wordList.wordPairs.length === 0) {
       this.currentLanguages.next(null);
+    }
+  }
+
+  public updateWordPair(wordPair: WordPair, index: number): void {
+    try {
+      this.wordList.wordPairs[index] = wordPair;
+      this.saveToLocalStorage();
+    } catch (error) {
+      console.error(error);
     }
   }
 

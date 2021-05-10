@@ -16,8 +16,12 @@
   <button (click)="clearWordPairs()">Clear list</button>
   <ul>
     <li *ngFor="let wordPair of wordlist.wordPairs; let i = index">
-      <p>{{ wordPair.toString() }}</p>
-      <button (click)="removeWordPair(i)">Remove</button>
+      <app-wordpair
+        [wordPair]="wordPair"
+        [index]="i"
+        (wordPairChanged)="this.updateWordPair($event)"
+        (wordPairDeleted)="this.removeWordPair($event)"
+      ></app-wordpair>
     </li>
   </ul>
 </div>
