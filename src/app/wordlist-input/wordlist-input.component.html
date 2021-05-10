@@ -1,46 +1,54 @@
 <div>
-  <h1>Enter a new Word Pair:</h1>
+  <h3 class="border-bottom">Enter a new Word Pair:</h3>
   <form>
-    <select
-      name="leftWordLanguage"
-      id="leftWordLanguage"
-      [(ngModel)]="this.leftLanguage"
-    >
-      <option
-        *ngFor="let language of this.language | keyvalue"
-        [ngValue]="language.value"
+    <div class="form-group">
+      <select
+        name="leftWordLanguage"
+        id="leftWordLanguage"
+        [(ngModel)]="this.leftLanguage"
       >
-        {{ language.value }}
-      </option>
-    </select>
-    <input
-      type="text"
-      name="leftWordSpelling"
-      id="leftWordSpelling"
-      [(ngModel)]="this.leftSpelling"
-    />
+        <option
+          *ngFor="let language of this.language | keyvalue"
+          [ngValue]="language.value"
+        >
+          {{ language.value }}
+        </option>
+      </select>
+      <input
+        type="text"
+        name="leftWordSpelling"
+        id="leftWordSpelling"
+        [(ngModel)]="this.leftSpelling"
+      />
+    </div>
 
-    <select
-      name="rightWordLanguage"
-      id="rightWordLanguage"
-      [(ngModel)]="this.rightLanguage"
-    >
-      <option
-        *ngFor="let language of this.language | keyvalue"
-        [ngValue]="language.value"
+    <div class="form-group">
+      <select
+        name="rightWordLanguage"
+        id="rightWordLanguage"
+        [(ngModel)]="this.rightLanguage"
       >
-        {{ language.value }}
-      </option>
-    </select>
-    <input
-      type="text"
-      name="rightWordSpelling"
-      id="rightWordSpelling"
-      [(ngModel)]="this.rightSpelling"
-    />
+        <option
+          *ngFor="let language of this.language | keyvalue"
+          [ngValue]="language.value"
+        >
+          {{ language.value }}
+        </option>
+      </select>
+      <input
+        type="text"
+        name="rightWordSpelling"
+        id="rightWordSpelling"
+        [(ngModel)]="this.rightSpelling"
+      />
+    </div>
 
-    <p>{{ this.errorMessage }}</p>
+    <div *ngIf="this.hasErrorMessage()" class="alert alert-danger">
+      <p>{{ this.errorMessage }}</p>
+    </div>
 
-    <button type="submit" (click)="submitWordPair()">Add new WordPair</button>
+    <button class="btn btn-primary" type="submit" (click)="submitWordPair()">
+      Add new WordPair
+    </button>
   </form>
 </div>

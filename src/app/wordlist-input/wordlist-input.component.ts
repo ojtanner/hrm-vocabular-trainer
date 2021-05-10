@@ -33,8 +33,13 @@ export class WordlistInputComponent implements OnInit {
         new Word(this.rightLanguage, this.rightSpelling)
       );
       this.wordlistManagementService.addWordPair(newWordPair);
+      this.errorMessage = '';
     } catch (error) {
       this.errorMessage = error.message;
     }
+  }
+
+  public hasErrorMessage(): boolean {
+    return this.errorMessage.length > 0;
   }
 }
