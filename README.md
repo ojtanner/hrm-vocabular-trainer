@@ -52,8 +52,6 @@ davon
 
 ### 3.2) Verbesserungen:
 
-Assessment:
-
 - Statistik könnte schöner sein / eigene Komponente sein. Keine Zeit mehr gehabt.
 - Styling generell könnte schöner sein. Keine Zeit mehr gehabt.
 - Training und Assessment Workflow können verbessert werden. Momentan sehr anfällig für Bugs durch Instanzvariabel-Mutation und komplizierte Call-Chain Logik. Eventuell wäre eine State Maschine ein besserer Ansatz hier.
